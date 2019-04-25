@@ -54,7 +54,7 @@ app.use('/admin/food', require('./routes/admin/food'));
 app.use('/admin/order', require('./routes/admin/order'));
 app.use('/admin/menu', require('./routes/admin/menu'));
 app.use('/api', require('./routes/api'));
-app.use('/api/food', require('./routes/api/food'));
+app.use('/api/article', require('./routes/api/article'));
 app.use('/api/good', require('./routes/api/good'));
 app.use('/api/order', require('./routes/api/order'));
 app.use('/api/review', require('./routes/api/review'));

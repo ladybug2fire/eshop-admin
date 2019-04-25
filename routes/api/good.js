@@ -24,4 +24,28 @@ router.get('/list', function(req, res){
     })
 })
 
+router.get("/search", function(req, res) {
+    let tag = req.query.tag;
+    if(!tag){
+      res.json({
+        code: 500,
+        msg: "条件为空"
+      }); 
+    }
+    Article.find().or([{type: {$regex:tag, $options: 'i'}},{goodname: {$regex: tag, $options:'i'}}]).exec(function(err, result) {
+        console.log(req.query.id)
+      if (err) {
+          res.json({
+            code: 500,
+            msg: "异常"
+          });
+        } else {
+          res.json({
+            code: 200,
+            data: result
+          });
+        }
+    });
+  });
+
 module.exports = router;

@@ -1,5 +1,5 @@
 var Good = require("../../models/good.js");
-var Food = require("../../models/food.js");
+var Food = require("../../models/article.js");
 var Review = require("../../models/review.js");
 var Order = require("../../models/order.js");
 var User = require("../../models/user.js");
