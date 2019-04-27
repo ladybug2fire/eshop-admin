@@ -36,7 +36,7 @@ router.post("/add", function(req, res) {
     if (result.length) {
       res.json({
         code: 500,
-        msg: "该菜名已经被占用"
+        msg: "该名称已经被占用"
       });
     } else {
       var jsonObj = _.assign(
@@ -49,7 +49,8 @@ router.post("/add", function(req, res) {
           "desc",
         ]),
         {
-          addTime: new Date().toLocaleString()
+          addTime: new Date().toLocaleString(),
+          views: 0,
         }
       );
       console.log("req.body", jsonObj);
