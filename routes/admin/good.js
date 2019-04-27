@@ -12,11 +12,14 @@ var upload = multer({ dest: 'uploads/img/'});
 
 router.post("/upload", upload.single('file'), function(req, res, next){
     let obj = req.file;
+    console.log(req.body)
     let good = new Good({
         goodname : req.body.goodname,
         addTime: new Date().toLocaleString(),
         picUrl: '/img/' + obj.filename,
         desc: req.body.desc,
+        cat: req.body.cat,
+        specify: req.body.specify,
         price: req.body.price,
     });
     good.save(function (err, result) {

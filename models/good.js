@@ -11,6 +11,8 @@ var GoodSchema = new Schema({
     addTime: {type: String}, // 添加时间
     sales: {type: Number},
     desc: {type: String},
+    cat: {type: String},
+    specify: {type: String},
 });
 
 module.exports = mongoose.model('Good',GoodSchema);
