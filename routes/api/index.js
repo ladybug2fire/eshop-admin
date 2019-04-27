@@ -2,13 +2,25 @@ var User = require("../../models/user.js");
 var Menu = require("../../models/menu.js");
 var express = require('express')
 var router = express.Router()
+var _ = require("lodash");
+var multer = require("multer");
 
+var upload = multer({ dest: "uploads/img/" });
 router.get('/', function(req, res){
     User.find(function(err, docs){
         // res.json(docs)
         res.render("admin/user/list", {title: '用户管理', layout: 'admin/layout', list: docs });
     })
 });
+
+router.post("/upload", upload.single("file"), function(req, res, next) {
+    let obj = req.file;
+    res.json({
+      code: 200,
+      msg: "success",
+      data: "/img/" + obj.filename
+    });
+  });
 
 router.post('/register', function(req, res){
     User.find({ username: req.body.username}, function(err, result){
@@ -21,6 +33,7 @@ router.post('/register', function(req, res){
             var user = new User({
                 username : req.body.username,
                 password: req.body.password,
+                phone: req.body.phone,
             });
             user.save(function (err, result) {
                 if (err) {

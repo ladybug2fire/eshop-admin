@@ -6,9 +6,10 @@ var UserSchema = new Schema({
     password: { type: String },
     sex: { type: String },
     birthday: { type: String },
+    phone: String,
+    avatar: String,
     address: { type: String },
     desc: { type: String },
-    menus: [{id:String}]
 });
 
 module.exports = mongoose.model('User',UserSchema);
