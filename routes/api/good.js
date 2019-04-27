@@ -32,7 +32,7 @@ router.get("/search", function(req, res) {
         msg: "条件为空"
       }); 
     }
-    Article.find().or([{type: {$regex:tag, $options: 'i'}},{goodname: {$regex: tag, $options:'i'}}]).exec(function(err, result) {
+    Good.find().or([{cat: {$regex:tag, $options: 'i'}},{goodname: {$regex: tag, $options:'i'}}]).exec(function(err, result) {
         console.log(req.query.id)
       if (err) {
           res.json({
