@@ -8,7 +8,9 @@ var _ = require('lodash')
 
 // 查询当前用户的订单
 router.get('/list', function(req, res){
-    Order.find().sort({"_id":-1}).exec(function(err, result){
+    Order.find({
+        userid: req.query.userid
+    }).sort({"_id":-1}).exec(function(err, result){
         if(err){
             res.json({
                 code: 500,
