@@ -62,4 +62,20 @@ router.get('/list', function(req, res){
     })
 })
 
+router.get('/del', function(req, res){
+    GoodReview.findByIdAndRemove(req.query.id, function(err, result){
+        if(err){
+            res.json({
+                code: 500,
+                msg: err,
+            })
+        }else{
+            res.json({
+                code: 200,
+                msg: '删除成功',
+            })
+        }
+    })
+})
+
 module.exports = router;
