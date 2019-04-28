@@ -13,7 +13,7 @@
         <% list.forEach(function(l){ %>
         <tr>
             <td><img class="snap-shot" src="<%- l.picUrl %>" alt=""></td>
-            <td><%- l.foodname %></td>
+            <td><a href="/admin/article/detail?id=<%=l._id%>"><%- l.title %></a></td>
             <td><%- l.addTime %></td>
             <td><a style="cursor:pointer" onclick="deleteGood('<%- l._id %>')">删除</a></td>
         </tr>

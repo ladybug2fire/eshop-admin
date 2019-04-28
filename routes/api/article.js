@@ -74,6 +74,11 @@ router.post("/add", function(req, res) {
   });
 });
 
+// 修改views 浏览量
+router.get("/view", function(req, res){
+
+})
+
 router.get("/delete", function(req, res) {
   Article.findByIdAndRemove(req.query.id, (err, result) => {
     if (err) {

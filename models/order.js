@@ -19,6 +19,7 @@ var OrderSchema = new Schema({
     addTime: {type: String}, // 添加时间
     userid: String,
     username: {type: String},
+    isReview: Boolean,
 });
 
 module.exports = mongoose.model('Order',OrderSchema);

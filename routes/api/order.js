@@ -30,7 +30,6 @@ router.get('/list', function(req, res){
 // 下单
 router.post('/buy', function(req, res) {
     let order = new Order(req.body);
-    console.log(order);
     order.save(function(err, result2) {
         if (err) {
             res.json({
@@ -56,6 +55,23 @@ router.get('/del', function(req, res) {
             res.json({
                 code: 200,
                 msg: '删除成功'
+            })
+        }
+    })
+})
+
+router.get('/get', function(req, res) {
+    Order.findById(req.query.id,function(err, result){
+        if(err){
+            res.json({
+                code: 500,
+                msg: err,
+            })
+        }else{
+            res.json({
+                code: 200,
+                msg: '获取成功',
+                data: result
             })
         }
     })

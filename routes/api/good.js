@@ -24,6 +24,25 @@ router.get('/list', function(req, res){
     })
 })
 
+
+router.get('/get', function(req, res){
+    Good.findById(req.query.id, function(err, result){
+        if(err){
+            res.json({
+                code: 500,
+                msg: err,
+            })
+        }else{
+            res.json({
+                code: 200,
+                msg: '获取成功',
+                data: result,
+            })
+        }
+        
+    })
+})
+
 router.get("/search", function(req, res) {
     let tag = req.query.tag;
     if(!tag){
