@@ -24,6 +24,9 @@ router.post('/add', async function(req, res){
         delete e._id
         goodReviews.push(new GoodReview({
             ...e,
+            username: req.body.username,
+            userid: req.body.userid,
+            avatar: req.body.avatar,
             addTime:new Date().toLocaleString(), 
         }))
     })
