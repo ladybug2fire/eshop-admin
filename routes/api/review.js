@@ -12,7 +12,7 @@ var upload = multer({ dest: 'uploads/img/'});
 
 router.post('/add', function(req, res){
     var review = new Review(_.assign(_.pick(req.body,
-        ['userid', 'username', 'foodid', 'desc', 'star']
+        ['userid', 'username', 'articleid', 'desc', 'avatar']
     ), {
         addTime: new Date().toLocaleString(),
     }))
@@ -32,7 +32,7 @@ router.post('/add', function(req, res){
 })
 
 router.get('/list', function(req, res){
-    Review.find({foodid: req.query.id}).sort({"_id":-1}).exec(function(err, result){
+    Review.find({articleid: req.query.id}).sort({"_id":-1}).exec(function(err, result){
         if(err){
             res.json({
                 code: 500,
@@ -46,6 +46,22 @@ router.get('/list', function(req, res){
             })
         }
         
+    })
+})
+
+router.get('/del', function(req, res){
+    Review.findByIdAndRemove(req.query.id, function(err, result){
+        if(err){
+            res.json({
+                code: 500,
+                msg: err,
+            })
+        }else{
+            res.json({
+                code: 200,
+                msg: '删除成功',
+            })
+        }
     })
 })
 
