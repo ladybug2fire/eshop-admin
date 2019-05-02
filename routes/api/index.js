@@ -1,5 +1,4 @@
 var User = require("../../models/user.js");
-var Menu = require("../../models/menu.js");
 var express = require('express')
 var router = express.Router()
 var _ = require("lodash");
@@ -44,26 +43,10 @@ router.post('/register', function(req, res){
                     })
                 }
                 else {
-                    var defaultMenu = new Menu({
-                        userid: result._id,
-                        username: result.username,
-                        menuname: `${result.username}的菜单`,
-                        addTime: new Date().toLocaleString(),
-                        ispublic: true,
-                    });
-                    defaultMenu.save(function(err, savedMenu){
-                        if(err){
-                            res.json({
-                                code: 500,
-                                msg: err,
-                            })
-                        }else{
-                            res.json({
-                                code: 200,
-                                msg: '创建账号成功'
-                            }) 
-                        }
-                    })
+                    res.json({
+                        code: 200,
+                        msg: '创建账号成功'
+                    }) 
                 }
             });
         }
@@ -127,5 +110,57 @@ router.get('/delete', function(req, res){
         }
     })
 });
+
+router.get('/history', function(req, res){
+    User.findById(req.query.id, function(err, result){
+        if(err){
+            res.json({
+                code: 500,
+                msg: '异常'
+            })
+        }else{
+            res.json({
+                code: 200,
+                data: result.history
+            })
+        }
+    })
+})
+
+router.get('/history/add', function(req, res){
+    User.findByIdAndUpdate(req.query.id, {$addToSet:{
+        history: req.query.key
+    }}, function(err, result){
+        if(err){
+            res.json({
+                code: 500,
+                msg: '异常'
+            })
+        }else{
+            res.json({
+                code: 200,
+                msg: '添加成功'
+            })
+        }
+    })
+})
+
+router.get('/history/clear', function(req, res){
+    User.findByIdAndUpdate(req.query.id, {$set:{
+        history: []
+    }}, function(err, result){
+        if(err){
+            res.json({
+                code: 500,
+                msg: '异常'
+            })
+        }else{
+            res.json({
+                code: 200,
+                msg: '清除成功'
+            })
+        }
+    })
+})
 
 module.exports = router;

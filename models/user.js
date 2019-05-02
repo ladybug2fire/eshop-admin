@@ -12,6 +12,7 @@ var UserSchema = new Schema({
     desc: { type: String },
     favorite: [String], //收藏的文章
     follow: [String], //关注的作者
+    history: [String], //历史搜索
 });
 
 module.exports = mongoose.model('User',UserSchema);

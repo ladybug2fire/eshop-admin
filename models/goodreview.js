@@ -10,7 +10,7 @@ var ReviewSchema = new Schema({
     avatar: String, // 头像
     star: { type: Number }, //评分
     addTime: {type: String}, // 添加时间
-    desc: {type: String},
+    review: {type: String},
     goodid: String,  // 商品 id
 });
 

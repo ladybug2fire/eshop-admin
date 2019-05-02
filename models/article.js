@@ -9,6 +9,7 @@ var ArticleSchema = new Schema({
     picUrl: { type: String },
     username: String,
     userid: String,
+    avatar: String,
     detail: String,
     addTime: String,
     views: Number,
