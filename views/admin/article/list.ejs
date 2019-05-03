@@ -4,7 +4,8 @@
     <thead>
         <tr>
             <th>图片</th>
-            <th>商品名</th>
+            <th>标题</th>
+            <th>阅读量</th>
             <th>发布时间</th>
             <th>操作</th>
         </tr>
@@ -14,6 +15,7 @@
         <tr>
             <td><img class="snap-shot" src="<%- l.picUrl %>" alt=""></td>
             <td><a href="/admin/article/detail?id=<%=l._id%>"><%- l.title %></a></td>
+            <td><%- l.views %></td>
             <td><%- l.addTime %></td>
             <td><a style="cursor:pointer" onclick="deleteGood('<%- l._id %>')">删除</a></td>
         </tr>
