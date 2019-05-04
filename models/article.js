@@ -1,5 +1,5 @@
 /**
- * 菜谱
+ * 文章 
  */
 var mongoose = require('../config/db'),
     Schema = mongoose.Schema;
