@@ -1,16 +1,10 @@
-var User = require("../../models/user.js");
+var User = require("../../modules/user.js");
 var express = require('express')
 var router = express.Router()
 var _ = require("lodash");
 var multer = require("multer");
 
 var upload = multer({ dest: "uploads/img/" });
-router.get('/', function(req, res){
-    User.find(function(err, docs){
-        // res.json(docs)
-        res.render("admin/user/list", {title: '用户管理', layout: 'admin/layout', list: docs });
-    })
-});
 
 router.post("/upload", upload.single("file"), function(req, res, next) {
     let obj = req.file;
@@ -21,146 +15,104 @@ router.post("/upload", upload.single("file"), function(req, res, next) {
     });
   });
 
-router.post('/register', function(req, res){
-    User.find({ username: req.body.username}, function(err, result){
-        if(result.length){
-            res.json({
-                code: 500,
-                msg: '用户名已经被占用'
-            })
-        }else{
-            var user = new User({
+router.post('/register', async function(req, res){
+    const existUser = await User.getUser(req.body.username);
+    if(existUser){
+        res.json({
+            code: 500,
+            msg: '用户名已经被占用'
+        })
+    }else{
+        console.log(req.body)
+        try {
+            var user = await User.createUser({
                 username : req.body.username,
                 password: req.body.password,
                 phone: req.body.phone,
             });
-            user.save(function (err, result) {
-                if (err) {
-                    console.log("Error:" + err);
-                    res.json({
-                        code: 500,
-                        msg: err,
-                    })
-                }
-                else {
-                    res.json({
-                        code: 200,
-                        msg: '创建账号成功'
-                    }) 
-                }
-            });
-        }
-    })
-})
-
-router.post('/login', function(req, res){
-    User.findOne({ username: req.body.username, password: req.body.password}, function(err, result){
-        if(err){
-            res.json({
-                code: 500,
-                msg: '没有此用户'
-            })
-        } else{
-            if(result && result.password === req.body.password){
+            if(user){
                 res.json({
                     code: 200,
-                    msg: '登入成功',
-                    data: result
-                }) 
-            }else{
-                res.json({
-                    code: 500,
-                    msg: '密码错误'
-                }) 
+                    msg: '创建账号成功'
+                })  
             }
+        } catch (error) {
+            res.json({
+                code: 500,
+                msg: error,
+            }) 
         }
-    })
+    }
+})
+
+router.post('/login', async function(req, res){
+    try {
+        const user = await User.getUser(req.body.username);
+        if(user && user.password === req.body.password){
+            res.json({
+                code: 200,
+                msg: '登入成功',
+                data: user
+            }) 
+        }else{
+            res.json({
+                code: 500,
+                msg: '密码错误'
+            }) 
+        }
+    } catch (error) {
+        console.log(error)
+        res.json({
+            code: 500,
+            msg: '出错了'
+        }) 
+    }
 })
 
 // 编辑要修改下
 router.post('/updateUser', function(req, res){
-    User.findByIdAndUpdate(req.body._id, req.body, function(err, result){
-        if (err) {
-            res.json({
-                code: 500,
-                msg: err,
-            })
-        }
-        else {
+    try {
+        const result = User.update(req.body);
+        if(result){
             res.json({
                 code: 200,
                 msg: '更新成功',
             }) 
+        }else{
+            res.json({
+                code: 300,
+                msg: '更新失败',
+            })   
         }
-    })
+    } catch (error) {
+        res.json({
+            code: 500,
+            msg: error,
+        })
+    }
 })
 
-router.get('/delete', function(req, res){
-    User.findByIdAndRemove(req.query.id, (err, result)=>{
-        if(err){
-            res.json({
-                code: 500,
-                msg: '异常'
-            })
-        }else{
+router.get('/delete',async function(req, res){
+    try {
+        const result = User.del(req.query.id)
+        if(result){
             res.json({
                 code: 200,
                 msg: '删除成功'
             })
+        }else{
+            res.json({
+                code: 300,
+                msg: '删除失败'
+            })
         }
-    })
+    } catch (error) {
+        console.log(error)
+        res.json({
+            code: 500,
+            msg: '异常'
+        })
+    }
 });
-
-router.get('/history', function(req, res){
-    User.findById(req.query.id, function(err, result){
-        if(err){
-            res.json({
-                code: 500,
-                msg: '异常'
-            })
-        }else{
-            res.json({
-                code: 200,
-                data: result.history
-            })
-        }
-    })
-})
-
-router.get('/history/add', function(req, res){
-    User.findByIdAndUpdate(req.query.id, {$addToSet:{
-        history: req.query.key
-    }}, function(err, result){
-        if(err){
-            res.json({
-                code: 500,
-                msg: '异常'
-            })
-        }else{
-            res.json({
-                code: 200,
-                msg: '添加成功'
-            })
-        }
-    })
-})
-
-router.get('/history/clear', function(req, res){
-    User.findByIdAndUpdate(req.query.id, {$set:{
-        history: []
-    }}, function(err, result){
-        if(err){
-            res.json({
-                code: 500,
-                msg: '异常'
-            })
-        }else{
-            res.json({
-                code: 200,
-                msg: '清除成功'
-            })
-        }
-    })
-})
 
 module.exports = router;

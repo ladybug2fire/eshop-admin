@@ -53,7 +53,6 @@ app.use('/admin/good', require('./routes/admin/good'));
 app.use('/admin/article', require('./routes/admin/article'));
 app.use('/admin/order', require('./routes/admin/order'));
 app.use('/api', require('./routes/api'));
-app.use('/api/article', require('./routes/api/article'));
 app.use('/api/good', require('./routes/api/good'));
 app.use('/api/order', require('./routes/api/order'));
 app.use('/api/review', require('./routes/api/review'));
