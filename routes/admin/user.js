@@ -54,57 +54,27 @@ router.get('/new', function(req, res){
     res.render("admin/user/new", {title: '创建用户', layout: 'admin/layout'})
 })
 
-// 编辑要修改下
-router.post('/edit', function(req, res){
-    console.log(req.body.name, req.body)
-    User.find({ username: req.body.username}, function(err, result){
-        if(result.length){
-            res.send('username is in used')
-        }else{
-            var user = new User({
-                username : req.body.username,
-                password: req.body.username,
-                phone: req.body.phone,
-            });
-            user.save(function (err, result) {
-                if (err) {
-                    console.log("Error:" + err);
-                    res.json({
-                        code: 500,
-                        msg: err,
-                    })
-                }
-                else {
-                    res.json({
-                        code: 200,
-                        msg: '创建账号成功'
-                    }) 
-                }
-            });
-        }
-    })
-})
-
-router.get('/delete', function(req, res){
-    User.findByIdAndRemove(req.query.id, (err, result)=>{
-        if(err){
-            res.json({
-                code: 500,
-                msg: '异常'
-            })
-        }else{
+router.get('/delete',async function(req, res){
+    try {
+        const result = User.del(req.query.id)
+        if(result){
             res.json({
                 code: 200,
                 msg: '删除成功'
             })
+        }else{
+            res.json({
+                code: 300,
+                msg: '删除失败'
+            })
         }
-    })
-});
-
-router.get('/get', function(req, res){
-    User.findById(req.query.id, function(err, result){
-        res.json(result)
-    })
+    } catch (error) {
+        console.log(error)
+        res.json({
+            code: 500,
+            msg: '异常'
+        })
+    }
 });
 
 module.exports = router;

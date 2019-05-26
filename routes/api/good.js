@@ -1,49 +1,50 @@
-var Good = require("../../models/good.js");
-var Review = require("../../models/review.js");
-var Order = require("../../models/order.js");
-var User = require("../../models/user.js");
+var Good = require("../../modules/good.js");
 var express = require('express')
 var router = express.Router()
 var _ = require('lodash')
 
-router.get('/list', function(req, res){
-    Good.find().sort({"_id":-1}).exec(function(err, result){
-        if(err){
-            res.json({
-                code: 500,
-                msg: err,
-            })
-        }else{
-            res.json({
-                code: 200,
-                msg: '获取成功',
-                data: result,
-            })
-        }
-        
-    })
+router.get('/list', async function(req, res){
+    try {
+      const result = await Good.findAll({
+        order:[
+          ['createdAt', 'DESC'],
+        ]
+      })
+      res.json({
+        code: 200,
+        msg: '获取成功',
+        data: result,
+      })
+    } catch (error) {
+      res.json({
+        code: 500,
+        msg: error,
+      }) 
+    }
 })
 
 
-router.get('/get', function(req, res){
-    Good.findById(req.query.id, function(err, result){
-        if(err){
-            res.json({
-                code: 500,
-                msg: err,
-            })
-        }else{
-            res.json({
-                code: 200,
-                msg: '获取成功',
-                data: result,
-            })
+router.get('/get', async function(req, res){
+    try {
+      const result = await Good.findOne({
+        where:{
+          _id: req.query.id
         }
-        
-    })
+      })
+      res.json({
+        code: 200,
+        msg: '获取成功',
+        data: result,
+      })
+    } catch (error) {
+      res.json({
+        code: 500,
+        msg: error,
+      }) 
+    }
 })
 
-router.get("/search", function(req, res) {
+router.get("/search",async function(req, res) {
     let tag = req.query.tag;
     if(!tag){
       res.json({
@@ -51,20 +52,23 @@ router.get("/search", function(req, res) {
         msg: "条件为空"
       }); 
     }
-    Good.find().or([{cat: {$regex:tag, $options: 'i'}},{goodname: {$regex: tag, $options:'i'}}]).exec(function(err, result) {
-        console.log(req.query.id)
-      if (err) {
-          res.json({
-            code: 500,
-            msg: "异常"
-          });
-        } else {
-          res.json({
-            code: 200,
-            data: result
-          });
-        }
-    });
-  });
+    try {
+      const result = await Good.findAll({
+        $or:[
+          {cat:{$like: tag}},
+          {goodname:{ $like: tag}}
+        ]
+      })
+      res.json({
+        code: 200,
+        data: result
+      });
+    } catch (error) {
+      res.json({
+        code: 500,
+        msg: error
+      });
+    }
+});
 
 module.exports = router;

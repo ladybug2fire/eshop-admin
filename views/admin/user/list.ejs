@@ -5,16 +5,20 @@
 <table id="user" class="table table-bordered table-hover">
     <thead>
         <tr>
+            <th>头像</th>
             <th>用户名</th>
             <th>密码</th>
+            <th>性别</th>
             <th>操作</th>
         </tr>
     </thead>
     <tbody>
         <% list.forEach(function(l){ %>
             <tr>
+                <td><img class="snap-shot" src="<%- l.avatar %>" alt=""></td>
                 <td><%- l.username %></td>
                 <td><%- l.password %></td>
+                <td><%- l.sex %></td>
                 <td>
                     <a style="cursor:pointer" onclick="deleteUser('<%- l._id %>')">删除</a>
                 </td>
@@ -22,7 +26,12 @@
         <% }); %>
     </tbody>
 </table>
-
+<style>
+    .snap-shot {
+        width: 80px;
+        height: 80px;
+    }
+</style>
 <script>
     $(function () {
         $('#user').DataTable()
