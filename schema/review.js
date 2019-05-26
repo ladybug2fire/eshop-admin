@@ -13,29 +13,29 @@ module.exports = function(sequelize, DataTypes) {
         },
         userid: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
           field: "userid"
         },
         goodid: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
           field: "goodid"
         },
         star: {
           type: DataTypes.FLOAT,
-          allowNull: false,
+          allowNull: true,
           field: "star"
         },
         // 添加时间
         addTime:{
           type: DataTypes.STRING,
-          allowNull: false,
+          allowNull: true,
           field: "addTime"
         },
         // 评论内容
         review: {
           type: DataTypes.STRING,
-          allowNull: false,
+          allowNull: true,
           field: "review"
         },
       },

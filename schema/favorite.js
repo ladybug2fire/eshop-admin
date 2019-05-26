@@ -13,12 +13,12 @@ module.exports = function(sequelize, DataTypes) {
         },
         userid: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
           field: "userid"
         },
         goodid: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
           field: "goodid"
         },
       },

@@ -13,12 +13,12 @@ module.exports = function(sequelize, DataTypes) {
       },
       price: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         field: "userid"
       },
       content: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         field: "content"
       }
     },

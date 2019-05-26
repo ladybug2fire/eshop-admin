@@ -14,43 +14,40 @@ module.exports = function(sequelize, DataTypes) {
         goodname: {
           type: DataTypes.STRING,
           allowNull: false,
-          field: "goodname"
         },
         // 评分 好像没用到
         star: {
           type: DataTypes.FLOAT,
-          allowNull: false,
-          field: "star"
+          allowNull: true,
         },
         // 价格
         price: {
           type: DataTypes.FLOAT,
-          allowNull: false,
-          field: "price"
+          allowNull: true,
         },
         // 产品图片
         picUrl:{
             type: DataTypes.STRING,
-            allowNull: false,
-            field: "picUrl"
+            allowNull: true,
         },
         // 添加时间
         addTime:{
           type: DataTypes.STRING,
-          allowNull: false,
-          field: "addTime"
+          allowNull: true,
         },
         // 产品规格 如:500g 
         specify: {
           type: DataTypes.STRING,
-          allowNull: false,
-          field: "specify"
+          allowNull: true,
+        },
+        desc: {
+          type: DataTypes.STRING,
+          allowNull: true,
         },
         // 类别
         cat: {
           type: DataTypes.STRING,
-          allowNull: false,
-          field: "specify"
+          allowNull: true,
         },
       },
       {

@@ -1,90 +1,99 @@
-var Good = require("../../models/good.js");
-var Review = require("../../models/review.js");
-var Order = require("../../models/order.js");
-var User = require("../../models/user.js");
+var Good = require("../../modules/good.js");
 var express = require('express')
 var router = express.Router()
-var fs = require('fs');
 var multer = require('multer');
 var _ = require('lodash')
 
 var upload = multer({ dest: 'uploads/img/'});
 
-router.post("/upload", upload.single('file'), function(req, res, next){
+router.post("/upload", upload.single('file'), async function(req, res, next){
     let obj = req.file;
-    console.log(req.body)
-    let good = new Good({
-        goodname : req.body.goodname,
-        addTime: new Date().toLocaleString(),
-        picUrl: '/img/' + obj.filename,
-        desc: req.body.desc,
-        cat: req.body.cat,
-        specify: req.body.specify,
-        price: req.body.price,
-    });
-    good.save(function (err, result) {
-        if (err) {
-            console.log("Error:" + err);
-            res.json({
-                code: 500,
-                msg: err,
-            })
-        }
-        else {
+    console.log(req.body);
+    try {
+        let good = await Good.create({
+            goodname : req.body.goodname,
+            addTime: new Date().toLocaleString(),
+            picUrl: '/img/' + obj.filename,
+            desc: req.body.desc,
+            cat: req.body.cat,
+            specify: req.body.specify,
+            price: req.body.price,
+        });
+        if(good){
             res.json({
                 code: 200,
                 msg: '发布成功'
             }) 
         }
-     });
+    } catch (error) {
+        res.json({
+            code: 500,
+            msg: error,
+        })
+    }
 });
 
-router.get('/', function(req, res){
-    Good.find().sort({"_id":-1}).exec(function(err, docs){
-        res.render("admin/good/list", {title: '商品', layout: 'admin/layout', list: docs });
+router.post("/edit", upload.single('file'), async function(req, res, next){
+    try {
+        const result = await Good.update(req.body, {
+            where:{
+                _id: req.body.id
+            }
+        })
+        res.json({
+            code: 200,
+            msg: '修改成功'
+        }) 
+    } catch (error) {
+        res.json({
+            code: 500,
+            msg: error,
+        }) 
+    }
+});
+
+router.get('/', async function(req, res){
+    const docs = await Good.findAll({
+        order:[
+            ['createdAt', 'DESC'],
+        ]
     })
+    res.render("admin/good/list", {title: '商品', layout: 'admin/layout', list: docs });
 });
 
-router.get('/list', function(req, res){
-    Good.find(function(err, docs){
-        if(err){
-            res.json({
-                code: 500,
-                msg: err
-            })
-        }else{
-            res.json({
-                code: 200,
-                data: docs,
-            })
+
+router.get('/new', async function(req, res){
+    if(req.query.id){
+        try {
+            const good = await Good.findByPk(req.query.id)
+            res.render("admin/good/new", {title: '编辑商品', layout: 'admin/layout', item: good , username: req.session.username});
+        } catch (error) {
+            console.log(error)
+            res.json(error);
         }
-    })
-})
-
-router.get('/new', function(req, res){
-    res.render("admin/good/new", {title: '发布商品', layout: 'admin/layout'})
+    }else{
+        res.render("admin/good/new", {title: '发布商品', layout: 'admin/layout'})
+    }
 })
 
 router.get('/delete', function(req, res){
-    Good.findByIdAndRemove(req.query.id,function(err, result){
-        if(err){
-            res.json({
-                code: 500,
-                msg: err,
-            })
-        }else{
-            res.json({
-                code: 200,
-                msg: '删除成功'
-            })
-        }
-    })
-});
-
-router.get('/get', function(req, res){
-    good.findById(req.query.id, function(err, result){
-        res.json(result)
-    })
+    try {
+        const result = Good.destroy({
+            where:{
+                _id: req.query.id
+            }
+        })
+        res.json({
+            code: 200,
+            msg: '删除成功'
+        })
+    } catch (error) {
+        console.log(error)
+        res.json({
+            code: 500,
+            msg: error,
+        })
+    }
 });
 
 router.get('/dashboard', function(req, res){

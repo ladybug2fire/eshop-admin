@@ -18,7 +18,10 @@
             <td><%- l.goodname %></td>
             <td><%- l.addTime %></td>
             <td><%- l.price %></td>
-            <td><a style="cursor:pointer" onclick="deleteItem('<%- l._id %>')">删除</a></td>
+            <td>
+                <a style="cursor:pointer" onclick="editItem('<%- l._id %>')">编辑</a>
+                <a style="cursor:pointer" onclick="deleteItem('<%- l._id %>')">删除</a>
+            </td>
         </tr>
         <% }); %>
     </tbody>
@@ -29,12 +32,15 @@
     }
 </style>
 <script>
+    var editItem = function (id) {
+		window.location.href = "/admin/good/new?id="+id;
+    }
     var deleteItem = function (id) {
         $.get('/admin/good/delete', {
             id,
         }, function (res) {
             if (res.code === 200) {
-                alert('删除成果');
+                alert('删除成功');
                 window.location.reload();
             }
             console.log(res);
