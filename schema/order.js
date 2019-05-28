@@ -14,13 +14,19 @@ module.exports = function(sequelize, DataTypes) {
       price: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        field: "userid"
       },
-      content: {
+      userid: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      addTime: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "content"
-      }
+      },
+      addressid: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       /**

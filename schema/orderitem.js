@@ -3,7 +3,7 @@
  */
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define(
-      "address",
+      "orderitem",
       {
         _id: {
           type: DataTypes.INTEGER,
@@ -11,21 +11,18 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: true,
           autoIncrement: true
         },
-        orderid: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          field: "orderid"
-        },
         goodid: {
           type: DataTypes.INTEGER,
-          allowNull: false,
-          field: "goodid"
+          allowNull: true,
+        },
+        orderid: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
         },
         // 订单中产品数量
         count: {
           type: DataTypes.INTEGER,
-          allowNull: false,
-          field: "count"
+          allowNull: true,
         },
       },
       {
