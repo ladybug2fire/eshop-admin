@@ -3,7 +3,7 @@ var express = require('express')
 var router = express.Router()
 
 router.get('/', async function(req, res){
-    const docs = await User.getAll();
+    const docs = await User.findAll();
     res.render("admin/user/list", {title: '用户管理', layout: 'admin/layout', list: docs });
 });
 
@@ -24,13 +24,17 @@ router.get('/getuser', function(req, res){
 });
 
 router.post('/new', async function(req, res){
-    const existUser = await User.getUser(req.body.username);
+    const existUser = await User.findOne({
+        where:{
+            username: req.body.username
+        }
+    });
     if(existUser){
         res.send('用户名已经被占用')
     }else{
         console.log(req.body)
         try {
-            var user = await User.createUser({
+            var user = await User.create({
                 username : req.body.username,
                 password: req.body.password,
                 phone: req.body.phone,
@@ -56,7 +60,11 @@ router.get('/new', function(req, res){
 
 router.get('/delete',async function(req, res){
     try {
-        const result = User.del(req.query.id)
+        const result = User.destroy({
+            where:{
+                _id: req.query.id
+            }
+        })
         if(result){
             res.json({
                 code: 200,

@@ -16,7 +16,11 @@ router.post("/upload", upload.single("file"), function(req, res, next) {
   });
 
 router.post('/register', async function(req, res){
-    const existUser = await User.getUser(req.body.username);
+    const existUser = await User.findOne({
+        where:{
+            username: req.body.username
+        }
+    });
     if(existUser){
         res.json({
             code: 500,
@@ -25,7 +29,7 @@ router.post('/register', async function(req, res){
     }else{
         console.log(req.body)
         try {
-            var user = await User.createUser({
+            var user = await User.create({
                 username : req.body.username,
                 password: req.body.password,
                 phone: req.body.phone,
@@ -47,7 +51,11 @@ router.post('/register', async function(req, res){
 
 router.post('/login', async function(req, res){
     try {
-        const user = await User.getUser(req.body.username);
+        const user = await User.findOne({
+            where:{
+                username: req.body.username
+            }
+        });
         if(user && user.password === req.body.password){
             res.json({
                 code: 200,
@@ -72,7 +80,11 @@ router.post('/login', async function(req, res){
 // 编辑要修改下
 router.post('/updateUser', function(req, res){
     try {
-        const result = User.update(req.body);
+        const result = User.update(req.body, {
+            where:{
+                _id: req.body._id
+            }
+        })
         if(result){
             res.json({
                 code: 200,
@@ -94,7 +106,11 @@ router.post('/updateUser', function(req, res){
 
 router.get('/delete',async function(req, res){
     try {
-        const result = User.del(req.query.id)
+        const result = User.destroy({
+            where:{
+                _id: req.query.id
+            }
+        })
         if(result){
             res.json({
                 code: 200,

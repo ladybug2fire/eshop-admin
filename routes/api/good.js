@@ -1,4 +1,5 @@
 var Good = require("../../modules/good.js");
+var User = require("../../modules/user.js");
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
 var express = require('express')
@@ -39,6 +40,56 @@ router.get('/get', async function(req, res){
         data: result,
       })
     } catch (error) {
+      res.json({
+        code: 500,
+        msg: error,
+      }) 
+    }
+})
+
+router.get('/myfavor', async function(req, res){
+    try {
+      const user = await User.findOne({
+        where:{
+          _id: req.query.id
+        },
+        include: Good
+      })
+      res.json({
+        code: 200,
+        msg: '成功',
+        data: user
+      })
+    } catch (error) {
+      console.log(error)
+      res.json({
+        code: 500,
+        msg: error,
+      }) 
+    }
+})
+router.get('/favor', async function(req, res){
+    try {
+      const user = await User.findByPk(req.query.id)
+      if(user){
+        const good = await Good.findByPk(req.query.goodid);
+        if(req.query.like==='true'){
+          await user.addGood(good)
+        }else{
+          await user.removeGood(good)
+        }
+        res.json({
+          code: 200,
+          msg: '成功',
+        })
+      }else{
+        res.json({
+          code: 300,
+          msg: '未登录',
+        }) 
+      }
+    } catch (error) {
+      console.log(error)
       res.json({
         code: 500,
         msg: error,

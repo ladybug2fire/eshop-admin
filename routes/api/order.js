@@ -15,6 +15,9 @@ router.get('/list', async function(req, res){
         order:[
           ['createdAt', 'DESC'],
         ],
+        where:{
+            userid: req.query.userid,
+        },
         include: Good
       })
       res.json({
@@ -39,7 +42,7 @@ router.post('/buy', async function(req, res) {
         // https://segmentfault.com/a/1190000003987871#articleHeader25
         const order = await Order.create(_.pick(req.body, ['userid', 'addTime', 'price', 'goods']));
         await Promise.all(_.map(req.body.goods,async e=>{
-            const good = await Good.findByPk(e._id)
+            const good = await Good.findByPk(e.goodid)
             return order.addGood(good,{through:{count: e.count}})
         }))
         if(order){
@@ -79,20 +82,24 @@ router.get('/del', async function(req, res) {
 })
 
 router.get('/get', async function(req, res) {
-    Order.findById(req.query.id,function(err, result){
-        if(err){
-            res.json({
-                code: 500,
-                msg: err,
-            })
-        }else{
-            res.json({
-                code: 200,
-                msg: '获取成功',
-                data: result
-            })
-        }
-    })
+    try {
+        const result = await Order.findOne({
+            where:{
+                _id: req.query.id
+            },
+            include: Good
+        })
+        res.json({
+            code: 200,
+            msg: '获取成功',
+            data: result
+        })
+    } catch (error) {
+        res.json({
+            code: 500,
+            msg: err,
+        })
+    }
 })
 
 

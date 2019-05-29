@@ -3,9 +3,9 @@
  */
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define(
-      "address",
+      "review",
       {
-        id: {
+        _id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           allowNull: true,
@@ -14,29 +14,24 @@ module.exports = function(sequelize, DataTypes) {
         userid: {
           type: DataTypes.INTEGER,
           allowNull: true,
-          field: "userid"
         },
         goodid: {
           type: DataTypes.INTEGER,
           allowNull: true,
-          field: "goodid"
         },
         star: {
           type: DataTypes.FLOAT,
           allowNull: true,
-          field: "star"
         },
         // 添加时间
         addTime:{
           type: DataTypes.STRING,
           allowNull: true,
-          field: "addTime"
         },
         // 评论内容
         review: {
           type: DataTypes.STRING,
           allowNull: true,
-          field: "review"
         },
       },
       {

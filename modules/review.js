@@ -5,7 +5,7 @@ const db = require("../config/mysql-db");
 const Sequelize = db.sequelize;
 
 // 引入数据表模型
-const Good = Sequelize.import("../schema/good");
-Good.sync({ force: false }); //自动创建表
+const Review = Sequelize.import("../schema/review");
+Review.sync({ force: false }); //自动创建表
 
-module.exports = Good;
+module.exports = Review;

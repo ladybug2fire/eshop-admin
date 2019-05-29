@@ -27,6 +27,10 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      isReview: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
     },
     {
       /**
