@@ -8,15 +8,27 @@ var _ = require('lodash')
 
 router.post('/add', async function(req, res){
     const reviews = _.get(req.body, 'reviews');
-    const {userid, addTime} = _.pick(req.body, ['userid', 'addTime'])
+    const {userid} = _.pick(req.body, ['userid', 'addTime'])
     const user = await User.findByPk(req.body.userid)
     if(user){
-        const goodReviews = Review.bulkCreate(_.map(reviews, e =>_.assign(_.pick(e, ['star', 'review']), {
-            userid,
-            goodid: e._id,
-            addTime:new Date().toLocaleString(), 
-        })))
-        await user.addReviews(goodReviews)
+        // const goodReviews = await Review.bulkCreate(_.map(reviews, e =>_.assign(_.pick(e, ['star', 'review']), {
+        //     userid,
+        //     goodid: e._id,
+        //     addTime:new Date().toLocaleString(), 
+        // })))
+        await Promise.all(_.map(reviews, async e=>{
+            const review = await Review.create(_.assign(_.pick(e, ['star', 'review']), {
+                userid,
+                goodid: e._id,
+                addTime:new Date().toLocaleString(), 
+            }))
+            const good =  await Good.findByPk(e._id);
+            await review.setGood(good);
+            
+            await user.addReview(review)
+        }))
+        // await user.addReviews(goodReviews)
+        // console.log(goodReviews);
         res.json({
             code: 200,
             msg: '评论过了'
@@ -69,6 +81,8 @@ router.get('/list', async function(req, res){
         },
         include: [{
             model: User,
+        },{
+            model: Good,
         }]
     })
     // const reviews = await User.findAll({
@@ -85,20 +99,23 @@ router.get('/list', async function(req, res){
     })
 })
 
-router.get('/del', function(req, res){
-    GoodReview.findByIdAndRemove(req.query.id, function(err, result){
-        if(err){
-            res.json({
-                code: 500,
-                msg: err,
-            })
-        }else{
-            res.json({
-                code: 200,
-                msg: '删除成功',
-            })
-        }
-    })
+router.get('/del', async function(req, res){
+    try {
+        await Review.destroy({
+            where: {
+                _id: req.query.id
+            }
+        })
+        res.json({
+            code: 200,
+            msg: '删除成功',
+        })
+    } catch (error) {
+        res.json({
+            code: 500,
+            msg: error,
+        })
+    }
 })
 
 module.exports = router;

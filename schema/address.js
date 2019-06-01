@@ -11,16 +11,22 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: true,
           autoIncrement: true
         },
-        userid: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          field: "userid"
-        },
-        content: {
+        address: {
           type: DataTypes.STRING,
           allowNull: false,
-          field: "content"
         },
+        phone: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        username: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        userid: {
+          type: DataTypes.INTEGER,
+          allowNull: false, 
+        }
       },
       {
         /**

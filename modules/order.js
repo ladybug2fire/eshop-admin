@@ -7,9 +7,11 @@ const Sequelize = db.sequelize;
 const Order = Sequelize.import("../schema/order");
 const OrderItem = require("./orderitem");
 const Good = require("./good");
+const User = require("./user");
 Order.belongsToMany(Good, { through: OrderItem, foreignKey: "orderid" });
 Good.belongsToMany(Order, { through: OrderItem, foreignKey: "goodid" });
 
+Order.belongsTo(User, { foreignKey: "userid" });
 Sequelize.sync({ force: false }); //自动创建表
 
 module.exports = Order;

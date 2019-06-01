@@ -11,39 +11,36 @@ module.exports = function(sequelize, DataTypes) {
       username: {
         type: DataTypes.STRING,
         allowNull: false,
-        field: "username"
       },
       sex: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "sex"
       },
       birthday: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "birthday"
       },
       password: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "password"
+      },
+      defaultAddress: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
       phone: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "phone"
       },
       // 头像url
       avatar: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "avatar"
       },
       // 简介
       desc: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "desc"
       }
     },
     {

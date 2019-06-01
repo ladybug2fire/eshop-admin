@@ -1,0 +1,27 @@
+<div>
+    <h4>买家：</h4>
+    <%- detail.user.username %>
+</div>
+<div>
+    <h4>下单时间:</h4>
+    <%- detail.addTime %> 
+</div>
+<div>
+    <h4>金额:</h4>
+    ¥ <%- detail.price %> 
+</div>
+<h4>商品列表</h4>
+<% detail.goods.forEach(function(e){ %>
+    <tr>
+        <td><img class="snap-shot" src="<%- e.picUrl %>"/></td>
+        <td>商品名：<%-e.goodname%></td>
+        <td>数量：<%-e.orderitem.count%></td>
+        <td>价格：<%-e.price%></td>
+    </tr>
+<% }); %>
+
+<style>
+    .snap-shot {
+        width: 100px;
+    }
+</style>

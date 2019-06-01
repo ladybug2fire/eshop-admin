@@ -1,26 +1,29 @@
 <%- contentFor('body') %>
 
-<table id="order" class="table table-bordered table-hover">
+<table id="good" class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th>订单号</th>
-            <th>用户ID</th>
-            <th>用户</th>
-            <th>金额</th>
-            <th>下单时间</th>
+            <th>用户id</th>
+            <th>用户名</th>
+            <th>商品id</th>
+            <th>商品名</th>
+            <th>评论</th>
+            <th>评分</th>
+            <th>评论时间</th>
             <th>操作</th>
         </tr>
     </thead>
     <tbody>
         <% list.forEach(function(l){ %>
         <tr>
-            <td><%- l._id %></td>
             <td><%- l.user && l.user._id %></td>
             <td><%- l.user && l.user.username %></td>
-            <td><%- l.price %></td>
+            <td><%- l.good && l.good._id %></td>
+            <td><%- l.good && l.good.goodname %></td>
+            <td><%- l.review %></td>
+            <td><%- l.star %></td>
             <td><%- l.addTime %></td>
             <td>
-                <a style="cursor:pointer" onclick="detail('<%- l._id %>')">详情</a>
                 <a style="cursor:pointer" onclick="deleteItem('<%- l._id %>')">删除</a>
             </td>
         </tr>
@@ -33,21 +36,18 @@
     }
 </style>
 <script>
-    var detail = function(id){
-        location.href = '/admin/order/detail?id='+id
-    }
     var deleteItem = function (id) {
-        $.get('/admin/order/delete', {
+        $.get('/admin/review/delete', {
             id,
         }, function (res) {
             if (res.code === 200) {
-                alert('删除成果');
+                alert('删除成功');
                 window.location.reload();
             }
             console.log(res);
         })
     }
     $(function () {
-        $('#order').DataTable()
+        $('#good').DataTable()
     })
 </script>

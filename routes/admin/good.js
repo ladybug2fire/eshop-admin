@@ -76,9 +76,9 @@ router.get('/new', async function(req, res){
     }
 })
 
-router.get('/delete', function(req, res){
+router.get('/delete',async function(req, res){
     try {
-        const result = Good.destroy({
+        const result = await Good.destroy({
             where:{
                 _id: req.query.id
             }

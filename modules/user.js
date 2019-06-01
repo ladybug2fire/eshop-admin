@@ -13,7 +13,9 @@ const Favorite = require("./favorite");
 User.belongsToMany(Good, { through: Favorite, foreignKey: "userid" });
 Good.belongsToMany(User, { through: Favorite, foreignKey: "goodid" });
 
-// User.hasMany(Review, {foreignKey: 'userid'})
+User.hasMany(Review, {foreignKey: 'userid'})
 Review.belongsTo(User, { foreignKey: "userid" });
+Review.belongsTo(Good, { foreignKey: "goodid" });
+
 Sequelize.sync({ force: false }); //自动创建表
 module.exports = User;
