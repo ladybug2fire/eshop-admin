@@ -11,17 +11,24 @@
     ¥ <%- detail.price %> 
 </div>
 <h4>商品列表</h4>
-<% detail.goods.forEach(function(e){ %>
-    <tr>
-        <td><img class="snap-shot" src="<%- e.picUrl %>"/></td>
-        <td>商品名：<%-e.goodname%></td>
-        <td>数量：<%-e.orderitem.count%></td>
-        <td>价格：<%-e.price%></td>
-    </tr>
-<% }); %>
-
+<table>
+    <tbody>
+        <% detail.goods.forEach(function(e){ %>
+            <tr>
+                <td><img class="snap-shot" src="<%- e.picUrl %>"/></td>
+                <td>商品名：<%-e.goodname%></td>
+                <td>数量：<%-e.orderitem.count%></td>
+                <td>价格：<%-e.price%></td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
 <style>
     .snap-shot {
         width: 100px;
+    }
+    tr{
+        margin: 10px 0;
+        border-bottom: 1px solid grey;
     }
 </style>

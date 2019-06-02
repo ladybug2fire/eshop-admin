@@ -61,6 +61,10 @@ router.get('/', async function(req, res){
     res.render("admin/good/list", {title: '商品', layout: 'admin/layout', list: docs });
 });
 
+router.get('/type', async function(req, res){
+    res.render("admin/good/types", {title: '商品类别', layout: 'admin/layout'});
+});
+
 
 router.get('/new', async function(req, res){
     if(req.query.id){

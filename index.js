@@ -52,10 +52,10 @@ app.use('/admin/user', require('./routes/admin/user'));
 app.use('/admin/good', require('./routes/admin/good'));
 app.use('/admin/review', require('./routes/admin/review'));
 app.use('/admin/order', require('./routes/admin/order'));
+app.use('/admin/dashboard', require('./routes/admin/dashboard'));
 app.use('/api', require('./routes/api'));
 app.use('/api/good', require('./routes/api/good'));
 app.use('/api/order', require('./routes/api/order'));
-app.use('/api/review', require('./routes/api/review'));
 app.use('/api/address', require('./routes/api/address'));
 app.use('/api/goodreview', require('./routes/api/goodreview'));
 
