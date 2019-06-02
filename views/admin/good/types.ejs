@@ -1,5 +1,16 @@
-
-<form action="/admin/good/types" method="POST">
-    <textarea name="types"></textarea>
-    <button type="submit">保存</button>
+<div class="alert alert-warning alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h4><i class="icon fa fa-warning"></i> 注意!</h4>
+    使用英文逗号隔开即可
+</div>
+<form action="/admin/good/configtype" method="POST">
+    <div>
+        <textarea class="container" name="types"><%- types %></textarea>
+    </div>
+    <button  class="btn btn-primary" type="submit">保存</button>
 </form>
+<style>
+.container{
+    width: 500px;
+}
+</style>

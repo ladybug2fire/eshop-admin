@@ -22,16 +22,9 @@
       <div class="form-group">
         <label for="cat">分类</label>
         <select class="form-control" id="cat" name="cat" value="">
-          <option <%- item && item.cat == '进口水果' ? 'selected' :'' %>>进口水果</option>
-          <option <%- item && item.cat == '国产水果' ? 'selected' :'' %>>国产水果</option>
-          <option <%- item && item.cat == '精选肉类' ? 'selected' :'' %>>精选肉类</option>
-          <option <%- item && item.cat == '禽类蛋品' ? 'selected' :'' %>>禽类蛋品</option>
-          <option <%- item && item.cat == '海鲜水产' ? 'selected' :'' %>>海鲜水产</option>
-          <option <%- item && item.cat == '即烹美食' ? 'selected' :'' %>>即烹美食</option>
-          <option <%- item && item.cat == '乳品糕点' ? 'selected' :'' %>>乳品糕点</option>
-          <option <%- item && item.cat == '新鲜蔬菜' ? 'selected' :'' %>>新鲜蔬菜</option>
-          <option <%- item && item.cat == '方便素食' ? 'selected' :'' %>>方便素食</option>
-          <option <%- item && item.cat == '粮油杂货' ? 'selected' :'' %>>粮油杂货</option>
+          <% types.forEach(e=>{ %>
+            <option <%- item && item.cat == e ? 'selected' :'' %>><%-e%></option>
+          <% })%>
         </select>
       </div>
       <div class="form-group">

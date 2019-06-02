@@ -2,6 +2,7 @@ var Good = require("../../modules/good.js");
 var express = require('express')
 var router = express.Router()
 var multer = require('multer');
+var fs = require("fs")
 var _ = require('lodash')
 
 var upload = multer({ dest: 'uploads/img/'});
@@ -62,21 +63,37 @@ router.get('/', async function(req, res){
 });
 
 router.get('/type', async function(req, res){
-    res.render("admin/good/types", {title: '商品类别', layout: 'admin/layout'});
+    const types = fs.readFileSync(__dirname+'/type', 'utf-8');
+    console.log(types, 'type')
+    res.json({
+        code: 200,
+        data: types.split(',')
+    })
 });
 
+router.get('/configtype', async function(req, res){
+    const types = fs.readFileSync(__dirname+'/type', 'utf-8');
+    console.log(types, 'type')
+    res.render("admin/good/types", {title: '商品类别', layout: 'admin/layout', types});
+});
+
+router.post('/configtype', async function(req, res){
+    fs.writeFileSync(__dirname+'/type', req.body.types, 'utf-8');
+    res.render("admin/good/types", {title: '商品类别', layout: 'admin/layout', types: req.body.types});
+});
 
 router.get('/new', async function(req, res){
+    const types = fs.readFileSync(__dirname+'/type', 'utf-8');
     if(req.query.id){
         try {
             const good = await Good.findByPk(req.query.id)
-            res.render("admin/good/new", {title: '编辑商品', layout: 'admin/layout', item: good , username: req.session.username});
+            res.render("admin/good/new", {title: '编辑商品', layout: 'admin/layout', item: good , username: req.session.username, types: types.split(',')});
         } catch (error) {
             console.log(error)
             res.json(error);
         }
     }else{
-        res.render("admin/good/new", {title: '发布商品', layout: 'admin/layout'})
+        res.render("admin/good/new", {title: '发布商品', layout: 'admin/layout', types: types.split(',')})
     }
 })
 
