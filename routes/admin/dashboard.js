@@ -11,7 +11,7 @@ router.get('/', async function(req, res){
     const total = await Order.sum('price')
     const good = await Good.count();
     const user = await User.count();
-    res.render("admin/dashboard", {title: 'dashboard', layout: 'admin/layout', info:{
+    res.render("admin/dashboard", {title: '订单统计', layout: 'admin/layout', info:{
         good,
         user,
         order,
